@@ -20,7 +20,7 @@
 \newtheorem{proposition}[definition]{Proposition}
 
 \title{\textbf{Token or True Love?}\\[4pt] \large A statistical analysis of whether you are more likely to find the Fortnite Pirate Shop Token or be wifed up for Christmas}
-\author{Django Thompson\\[2pt] \small Code and data: \texttt{\repourl}}
+\author{Django Thompson\\[2pt] \small Preprint DOI: \href{https://doi.org/10.5281/zenodo.24150193}{\texttt{10.5281/zenodo.24150193}}\\ \small Code and data: \texttt{\repourl}}
 \date{12 November 2026}
 
 \raggedbottom
@@ -29,14 +29,14 @@
 
 \begin{abstract}
 \noindent
-Two seemingly impossible tasks: which one is more likely? The first is finding Fortnite's Pirate Shop Token, which drops from 1 in 137{,}500 chests and makes everything in the Item Shop that costs V-Bucks free for 14 days; the second is getting a girlfriend, which has no published drop rate at all. I model the token as a thinned Poisson process shaped by how long a player survives and how quickly matchmaking catches up with him, and the girlfriend as a Drake-style chain of filters calibrated to US survey data, adjusted for looks, personality, effort and (last but not least) height. A solo player needs a median of about 3{,}240 hours to find the token. A squad needs 1{,}250, because the token is shared. For a man who is looking and plays 10 hours a week, a girlfriend is three times as likely before the season ends on 5 December. The token pulls ahead only past roughly 23 hours a week, by which point he has stopped leaving the house, and height moves that line from 20 hours at 5'5'' to 30 at 6'3''. Fortunately, our Fortnite skills barely matter. However, dying off spawn does. Using Epic's own player counts, I estimate that about 14{,}000 tokens are found every day and that nobody you know has one.
+Two seemingly impossible tasks: which one is more likely? The first is finding Fortnite's Pirate Shop Token, which drops from 1 in 137{,}500 chests and makes everything in the Item Shop that costs V-Bucks free for 14 days; the second is getting a girlfriend, which has no published drop rate at all. I model the token as a thinned Poisson process shaped by how long a player survives and how quickly matchmaking catches up with him, and the girlfriend as a Drake-style chain of filters calibrated to US survey data, adjusted for looks, personality, effort and (last but not least) height. A solo player needs a median of about 3{,}240 hours to find the token. A squad needs 1{,}250, because the token is shared. For a man who is looking and plays 10 hours a week, a girlfriend is three times as likely before the season ends on 5 December. The token pulls ahead only past roughly 23 hours a week, by which point he has stopped leaving the house, and height moves that line from 20 hours at 5'5'' to 30 at 6'3''. Fortunately, Fortnite skill barely matters, but dying off spawn does. Using Epic's own player counts, I estimate that about 14{,}000 tokens are found every day and that nobody you know has one.
 \end{abstract}
 
 \noindent{\small\textit{Disclaimer.} Fortnite is a trademark of Epic Games, Inc. Portions of the materials used are trademarks and/or copyrighted works of Epic Games, Inc. All rights reserved by Epic. This material is not official and is not endorsed by Epic. AI was used to help code and run simulations for this project.}
 
 \section{Preliminaries}
 
-Epic confirmed the drop rate in early November 2026~\cite{status,vgc}. Before that, the internet had settled on 1 in 700{,}000~\cite{timesaver}, so the real odds turned out five times better than feared, which moves attempting to find the token from impossible to merely pointless.
+Epic confirmed the drop rate in early November 2026~\cite{status,vgc}. Before that, the internet had settled on 1 in 700{,}000~\cite{timesaver}, so the real odds turned out five times better than feared, which moves the token from impossible to merely pointless.
 
 \begin{definition}[The Token]
 A \emph{chest} is a Bernoulli trial with success probability $p = 1/137{,}500$. A success in any chest opened by any member of a group is credited to every member still in the match~\cite{gamesradar}. (This last clause turns out to matter. See Remark~\ref{rem:tg}.)
@@ -48,7 +48,7 @@ A \emph{girlfriend} is a relationship that forms before a stated deadline. I tak
 
 I borrow the girlfriend side from Backus~\cite{backus}, who used the Drake equation to explain why he was single. Economists treat the same problem as search with friction, such as looking for a job or a house~\cite{mortensen}. For simplicity, mine is the most basic version of both: people met, multiplied by the chance each one works out.
 
-\paragraph{Related work.} As far as I can find, nobody has raced a drop rate against a love life. Each half has its own literature, though. Rare loot is more arousing than common loot and makes players want to open more~\cite{larche}. Players hold badly wrong folk models of drop odds even when the odds are published~\cite{wen,xiao}, and showing people only the winners inflates their belief that they will win too~\cite{cordes}, which is more or less what a viral ``I found the token'' clip does. On the other side, online messages in an attempt to find a girlfriend flow up a steep ladder of desirability and replies thin out the higher you aim~\cite{bruch}. Whether gaming crowds out offline social life is still disputed~\cite{kowert,domahidi}. Optimal stopping asks when to stop looking~\cite{chow}, and its two-sided version, with everyone searching at once, is closer to real dating~\cite{eriksson}.
+\paragraph{Related work.} As far as I can find, nobody has raced a drop rate against a love life. Each half has its own literature, though. Rare loot is more arousing than common loot and makes players want to open more~\cite{larche}. Players hold badly wrong folk models of drop odds even when the odds are published~\cite{wen,xiao}, and showing people only the winners inflates their belief that they will win too~\cite{cordes}, which is more or less what a viral ``I found the token'' clip does. On the other side, online dating messages flow up a steep ladder of desirability and replies thin out the higher you aim~\cite{bruch}. Whether gaming crowds out offline social life is still disputed~\cite{kowert,domahidi}. Optimal stopping asks when to stop looking~\cite{chow}, and its two-sided version, with everyone searching at once, is closer to real dating~\cite{eriksson}.
 
 \section{The Token Process}
 
@@ -60,7 +60,7 @@ where $z_j$ is the player's skill in standard deviations and $(1-\phi)^k$ is fat
 \begin{equation}
 \mathbb{E}[c_n] = \sigma C\big(1 - e^{-T_n/\kappa}\big), \qquad C = 12,\ \kappa = 6 \text{ min},
 \end{equation}
-because most chests are opened soon after landing. Here $\sigma$ is the share of chests you open yourself (1 solo, 0.65 in a squad). Every match also costs about 4 minutes of lobby, queue, Battle Bus and skydive. Survival time $T$ is counted from the moment you land, not from when the bus sets off. Everything before you land is encapsulated in those 4 minutes.
+because most chests are opened soon after landing. Here $\sigma$ is the share of chests you open yourself (1 solo, 0.65 in a squad). Every match also costs about 4 minutes of lobby, queue, Battle Bus and skydive. Survival time $T$ is counted from the moment you land, not from when the bus sets off. Everything before you land is in those 4 minutes.
 
 \begin{proposition}[Charnov's rule with an exponential loot curve]
 Ignoring fatigue and noise, chests per hour $r(T) = 60C(1 - e^{-T/\kappa})/(T + O)$, with $O$ the time between matches, is maximised at
@@ -74,13 +74,13 @@ where $W_{-1}$ is the lower branch of the Lambert $W$ function.
 $r'(T)=0$ gives $e^{T/\kappa} = 1 + (T+O)/\kappa$. Put $x = 1 + (T+O)/\kappa$ to get $-xe^{-x} = -e^{-(1+O/\kappa)}$. The principal branch gives $T<-O$, so $x = -W_{-1}(-e^{-(1+O/\kappa)})$.
 \end{proof}
 
-This is the marginal value theorem from foraging ecology~\cite{charnov}. A bird should leave a bush once it is eating slower than its average for the whole trip; a player should leave a match once he is looting slower than his average including the time taken pre-game (lobby and landing time). Foraging papers already have the Lambert $W$ form. I only supply the Fortnite numbers: with $O = 4$ and $\kappa = 6$, $T^* = 5.82$ minutes, or \textbf{5 minutes 49 seconds} after landing. On the in-game clock that is roughly 7 minutes after the bus leaves, since the bus ride and the drop take about a minute and a half, depending on when you jump. There is no mathematical reason for your character to be alive after that. You most likely won't win, and battle royale results are mostly luck anyway~\cite{rosenbusch}, so leaving the game is the best option. People in foraging experiments tend to overstay too~\cite{saravanakumar}, which describes every player who has ever chased a Victory Royale.
+This is the marginal value theorem from foraging ecology~\cite{charnov}. A bird should leave a bush once it is eating slower than its average for the whole trip; a player should leave a match once he is looting slower than his average including the time before the game (lobby and landing). Foraging papers already have the Lambert $W$ form. I only supply the Fortnite numbers: with $O = 4$ and $\kappa = 6$, $T^* = 5.82$ minutes, or \textbf{5 minutes 49 seconds} after landing. On the in-game clock that is roughly 7 minutes after the bus leaves, since the bus ride and the drop take about a minute and a half, depending on when you jump. There is no mathematical reason for your character to be alive after that. You most likely won't win, and battle royale results are mostly luck anyway~\cite{rosenbusch}, so leaving the game is the best option. People in foraging experiments tend to overstay too~\cite{saravanakumar}, which describes every player who has ever chased a Victory Royale.
 
 \begin{remark}[Typical Gamer]\label{rem:tg}
-The rule does not survive contact with squads. The YouTuber Typical Gamer spent about 80 hours hunting the token, left a squad match as a joke, and watched his teammates find it moments later~\cite{dexerto}. The model gives a squad about a 4.5\% chance of a find within 80 hours. Therefore, only leave if your entire squad leaves at 5:49.
+The rule does not survive contact with squads. The YouTuber Typical Gamer spent about 80 hours hunting the token, left a squad match as a joke, and watched his teammates find it moments later~\cite{dexerto}. The model gives a squad about a 4.5\% chance of a find within 80 hours. So only leave at 5:49 if your whole squad leaves with you.
 \end{remark}
 
-\paragraph{Skill.} The job is opening chests, not winning. So skill should matter less than people assume, and the model agrees (Table~\ref{tab:token}, right): because $r(T)$ is nearly flat around $T^*$, anyone who survives somewhere between 4 and 9 minutes on average loots within 6\% of the best possible rate. Dying off spawn is the real penalty. It costs 37\% more hours. Oddly, being very good costs you too, since a top-1\% player stays alive so long that he needs 18\% more hours than the median player. Hence, leaving early is best.
+\paragraph{Skill.} The job is opening chests, not winning. So skill should matter less than people assume, and the model agrees (Table~\ref{tab:token}, right): because $r(T)$ is nearly flat around $T^*$, anyone who survives somewhere between 4 and 9 minutes on average loots within 6\% of the best possible rate. Dying off spawn is the real penalty. It costs 37\% more hours. Oddly, being very good costs you too, since a top-1\% player stays alive so long that he needs 18\% more hours than the median player. So even good players should leave early.
 
 \begin{table}[!htbp]
 \centering\small
@@ -135,7 +135,7 @@ Let $h$ be height in cm. US men aged 20--29 average 176.3 cm (5'9.4''), with 5th
 The cap reflects the finding that the advantage levels off above six feet~\cite{hensley}.
 \end{definition}
 
-This is an upper bound. First messages are not relationships, and a conjoint study that holds looks fixed finds that height, like job, bio and intelligence, has an effect 7 to 20 times smaller than attractiveness~\cite{witmer}. Table~\ref{tab:height} therefore also shows the result with $\beta$ halved. Average height gives a multiplier of 1, so no changes to earlier results.
+This is an upper bound. First messages are not relationships, and a conjoint study that holds looks fixed finds that height, like job, bio and intelligence, has an effect 7 to 20 times smaller than attractiveness~\cite{witmer}. Table~\ref{tab:height} also shows the result with $\beta$ halved. Average height gives a multiplier of 1, so no changes to earlier results.
 
 \begin{table}[!htbp]
 \centering\small
@@ -155,7 +155,7 @@ Height & Percentile & Multiplier & By Christmas & ($\beta/2$) & Crossover \\
 \end{tabular}
 \end{table}
 
-Height matters. Less than people say, however. Going from 5'7'' to 6'1'' is worth about as much as a modest step up in looks, and a good deal less than deciding to actually try (Table~\ref{tab:effort}). One limitation here is that the 65\% comes from heights men put on dating profiles, which are often inflated~\cite{toma}.
+Height matters, just less than people say. Going from 5'7'' to 6'1'' is worth about as much as a modest step up in looks, and a good deal less than deciding to actually try (Table~\ref{tab:effort}). The 65\% also comes from heights men put on dating profiles, which are often inflated~\cite{toma}.
 
 \section{Results}
 
@@ -168,7 +168,7 @@ Height matters. Less than people say, however. Going from 5'7'' to 6'1'' is wort
 \label{fig:season}
 \end{figure}
 
-\paragraph{Your odds.} People often say that there is a 1\% probability of getting a girlfriend. Fortunately, that figure is dragged down by the half of single men who are not trying. Effort is the only real lever you can pull before Christmas, and it beats height comfortably (Table~\ref{tab:effort}).
+\paragraph{Your odds.} People often quote a 1\% chance of getting a girlfriend, but that figure is dragged down by the half of single men who are not trying. Effort is the one thing you can change before Christmas, and it beats height comfortably (Table~\ref{tab:effort}).
 
 \begin{table}[!htbp]
 \centering\small
@@ -188,9 +188,9 @@ Going all out & 5.1\% & 16.3\% & 46.2\% \\
 
 \paragraph{How many people have it?} Epic will not say. Between 4 and 8 November the daily peak of players in a match averaged 4.1 million~\cite{endgame}, highest on the Saturday, as expected for online games~\cite{vihanga}. Peaks are not averages, since play swings with the time of day~\cite{henderson}, so I assume the average is 40 to 70\% of the peak, that 60 to 90\% of it is Battle Royale, and 39 to 60 chests per match-hour. That is about 2 billion chests a day, or roughly \textbf{14{,}000 tokens a day} (90\% range 9{,}600 to 21{,}000). Each find still costs about 2{,}800 hours of someone's match time. Readers can check the chest rate themselves: Epic also published 1 in 127 for a gizmo~\cite{forbes}, so a solo player on 10 hours a week should see two or three a week.
 
-\paragraph{Uncertainty.} Each of the 23 guessed parameters got a range, and I reran everything 400 times with recalibration. The girlfriend won at 10 hours a week in all 400. The crossover is much less concrete, anywhere from 17 to over 60 hours a week (90\% interval). According to the Sobol indices, two guesses dominate: chests per match, and how often relationships end. Neither has an obvious figure. One estimate circulating among players puts squads at 35 chests per player per match~\cite{forbes}, against my 4, and if that is anywhere close then every token number improves several-fold. On the other hand, the breakup literature mostly studies what predicts a breakup rather than how often one happens~\cite{le2010}.
+\paragraph{Uncertainty.} Each of the 23 guessed parameters got a range, and I reran everything 400 times with recalibration. The girlfriend won at 10 hours a week in all 400. The crossover is much less certain, anywhere from 17 to over 60 hours a week (90\% interval). According to the Sobol indices, two guesses dominate: chests per match, and how often relationships end. Neither has an obvious figure. One estimate circulating among players puts squads at 35 chests per player per match~\cite{forbes}, against my 4, and if that is anywhere close then every token number improves several-fold. As for breakups, the literature mostly studies what predicts one rather than how often one happens~\cite{le2010}.
 
-\paragraph{Strategy.} For the completely unemployed and desperate, here is the strategy I have come up with to optimise the chances of getting both. Ten hours a week means about 48 trips to the lobby. Send one DM from each instead of three a week (presuming you have game and the number of girls available to DM doesn't become a limiting factor), and an average casual man goes from 3.5\% to 9\% by Christmas. Add the 5:49 rule and the same ten hours fit 53 matches, which lifts the token to 1.1\% (2.7\% in a squad that leaves together). So, for the best chance of at least one of them: drop with a squad, loot, all die or leave together at 5:49, and DM someone from the bus. This assumes the reply rate stays at 8\% when the messages are coming from a loading screen. If you succeed in doing this then you truly deserve some luck, which is still what you will need.
+\paragraph{Strategy.} For the completely unemployed and desperate, here is my strategy for the best chance at both. Ten hours a week means about 48 trips to the lobby. Send one DM from each instead of three a week (presuming you have game and the number of girls available to DM doesn't become a limiting factor), and an average casual man goes from 3.5\% to 9\% by Christmas. Add the 5:49 rule and the same ten hours fit 53 matches, which lifts the token to 1.1\% (2.7\% in a squad that leaves together). So, for the best chance of at least one of them: drop with a squad, loot, all die or leave together at 5:49, and DM someone from the bus. This assumes the reply rate stays at 8\% when the messages are coming from a loading screen. If you manage all this, you deserve some luck. You will still need it.
 
 \section{Predictions}
 

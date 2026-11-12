@@ -1,4 +1,7 @@
-# Loot or Love?
+# Token or True Love?
+
+**Try the calculator:** https://djangothompson12-alt.github.io/Fortnite-Token-Probability-/  
+**Paper (DOI):** https://doi.org/10.5281/zenodo.24150193
 
 Are we more likely to find the Fortnite Pirate Shop Token or a girlfriend? I'm 19 and have neither, so I wrote a paper about it. [Here it is](loot-or-love.pdf).
 

@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you cite this, please use:"
+title: "Token or True Love? A statistical analysis of whether you are more likely to find the Fortnite Pirate Shop Token or be wifed up for Christmas"
+type: article
+authors:
+  - family-names: Thompson
+    given-names: Django
+doi: 10.5281/zenodo.24150193
+date-released: 2026-11-12
+license: MIT
+url: "https://djangothompson12-alt.github.io/Fortnite-Token-Probability-/"
+repository-code: "https://github.com/djangothompson12-alt/Fortnite-Token-Probability-"
