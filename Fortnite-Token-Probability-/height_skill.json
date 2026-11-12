@@ -1,0 +1,106 @@
+{
+  "height_mean_cm": 176.3,
+  "height_sd_cm": 7.93,
+  "beta_per_cm": 0.02464445314529966,
+  "height": [
+    {
+      "height": "5'5\"",
+      "cm": 165.1,
+      "pct": 8,
+      "mult": 0.76,
+      "p_xmas_active": 0.0651835402768417,
+      "p_xmas_active_halfbeta": 0.07446197549678779,
+      "crossover_hpw": 20.0
+    },
+    {
+      "height": "5'7\"",
+      "cm": 170.2,
+      "pct": 22,
+      "mult": 0.86,
+      "p_xmas_active": 0.07358447911089383,
+      "p_xmas_active_halfbeta": 0.0790954956151092,
+      "crossover_hpw": 22.0
+    },
+    {
+      "height": "5'9\"",
+      "cm": 175.3,
+      "pct": 45,
+      "mult": 0.98,
+      "p_xmas_active": 0.08301922546638207,
+      "p_xmas_active_halfbeta": 0.08400404631660752,
+      "crossover_hpw": 24.0
+    },
+    {
+      "height": "5'11\"",
+      "cm": 180.3,
+      "pct": 69,
+      "mult": 1.1,
+      "p_xmas_active": 0.09338205948074285,
+      "p_xmas_active_halfbeta": 0.08909740194950211,
+      "crossover_hpw": 26.0
+    },
+    {
+      "height": "6'1\"",
+      "cm": 185.4,
+      "pct": 87,
+      "mult": 1.25,
+      "p_xmas_active": 0.10520761401868328,
+      "p_xmas_active_halfbeta": 0.0945941630742475,
+      "crossover_hpw": 28.0
+    },
+    {
+      "height": "6'3\"",
+      "cm": 190.5,
+      "pct": 96,
+      "mult": 1.33,
+      "p_xmas_active": 0.11176557790640784,
+      "p_xmas_active_halfbeta": 0.09751860506192955,
+      "crossover_hpw": 29.5
+    }
+  ],
+  "skill": [
+    {
+      "skill": "Dies off spawn (mean 2 min)",
+      "mean_survival_min": 2.0,
+      "chests_per_hour": 25.5,
+      "median_hours_solo": 3742
+    },
+    {
+      "skill": "Bottom 10%",
+      "mean_survival_min": 3.8,
+      "chests_per_hour": 32.8,
+      "median_hours_solo": 2903
+    },
+    {
+      "skill": "Bottom 25%",
+      "mean_survival_min": 4.7,
+      "chests_per_hour": 34.2,
+      "median_hours_solo": 2788
+    },
+    {
+      "skill": "Median",
+      "mean_survival_min": 6.0,
+      "chests_per_hour": 34.8,
+      "median_hours_solo": 2740
+    },
+    {
+      "skill": "Top 25%",
+      "mean_survival_min": 7.6,
+      "chests_per_hour": 34.4,
+      "median_hours_solo": 2774
+    },
+    {
+      "skill": "Top 10%",
+      "mean_survival_min": 9.4,
+      "chests_per_hour": 33.1,
+      "median_hours_solo": 2877
+    },
+    {
+      "skill": "Top 1%",
+      "mean_survival_min": 13.5,
+      "chests_per_hour": 29.5,
+      "median_hours_solo": 3235
+    }
+  ],
+  "best_mean_survival_min": 6.13
+}
