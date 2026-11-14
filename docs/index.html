@@ -1,386 +1,610 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}</style>
-<title>Loot or Love Calculator</title>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Token or True Love?</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Will you find the Fortnite Pirate Shop Token before you get a girlfriend? Put in your numbers and find out.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Rubik:wght@400;500;700;800&display=swap">
 <style>
-/* Layout: a two-panel "lab bench". Inputs on the left, the head-to-head readout and the curve on the right. Stacks on phones with the readout first. */
+/* Layout: a loud scoreboard (token vs girlfriend) on top, a "play out my season" button that rolls a real
+   season from your odds, then the sliders. One committed look: cobalt sky, gold loot, hot-pink love. */
 :root {
-  --bg: #f3f5f9;
-  --panel: #ffffff;
-  --ink: #141a26;
-  --muted: #5b6577;
-  --line: #d9dee8;
-  --loot: #1f5fa8;      /* token blue, same as the paper's figures */
-  --love: #b3262b;      /* girlfriend red, same as the paper's figures */
-  --loot-soft: #e3ecf8;
-  --love-soft: #f8e5e5;
-  --focus: #1f5fa8;
-  --display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
-  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0f131b; --panel: #171d28; --ink: #e8ecf3; --muted: #9aa4b6; --line: #2a3242;
-    --loot: #6aa5ec; --love: #ef6b6f; --loot-soft: #1a2a40; --love-soft: #3a1c20; --focus: #6aa5ec;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0f131b; --panel: #171d28; --ink: #e8ecf3; --muted: #9aa4b6; --line: #2a3242;
-  --loot: #6aa5ec; --love: #ef6b6f; --loot-soft: #1a2a40; --love-soft: #3a1c20; --focus: #6aa5ec;
+  --sky: #1838d6;
+  --sky-deep: #0d2296;
+  --panel: #10279f;
+  --line: #3b5cf0;
+  --ink: #fff8ea;
+  --dim: #b8c3ff;
+  --gold: #ffc21a;
+  --gold-deep: #c98a00;
+  --pink: #ff4f9a;
+  --pink-deep: #c41f66;
+  --common: #9ea6b8;
+  --rare: #3aa0ff;
+  --epic: #b45cff;
+  --mythic: #ff7a1a;
+  --display: "Bowlby One", "Arial Black", Impact, sans-serif;
+  --body: "Rubik", "Segoe UI", system-ui, sans-serif;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-[hidden] { display: none !important; }
+html, body { background: var(--sky); }
 body {
-  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.45;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 28px 40px;
+  padding-block: 20px 48px;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, #3d61ff 0%, transparent 70%),
+    repeating-linear-gradient(-45deg, transparent 0 22px, rgba(255,255,255,.025) 22px 44px),
+    var(--sky);
+  min-height: 100%;
 }
-.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 22px; }
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 22px; }
+
+/* ---------- header ---------- */
 header { display: grid; gap: 6px; }
-.kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-h1 { font-family: var(--display); font-weight: 800; font-size: clamp(34px, 6vw, 56px); line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
-h1 .loot { color: var(--loot); } h1 .love { color: var(--love); }
-.lede { margin: 4px 0 0; max-width: 62ch; color: var(--muted); }
-.grid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 22px; align-items: start; }
-@media (max-width: 820px) { .grid { grid-template-columns: minmax(0, 1fr); } .results { order: -1; } }
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; min-width: 0; }
-.controls { display: grid; gap: 18px; }
-.group { display: grid; gap: 10px; }
-.group h2 { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; font-weight: 500; }
-.field { display: grid; gap: 4px; }
-.field label, .field .lab { display: flex; justify-content: space-between; gap: 10px; font-weight: 500; }
-.field output { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
-.hint { font-size: 12.5px; color: var(--muted); }
-input[type=range] { width: 100%; accent-color: var(--ink); }
-.seg { display: flex; flex-wrap: wrap; gap: 6px; }
-.seg button {
-  font: inherit; font-size: 13.5px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line);
-  background: transparent; color: var(--ink); cursor: pointer;
+h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 8vw, 4.6rem);
+  line-height: .92;
+  margin: 0;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  text-shadow: 0 5px 0 var(--sky-deep);
+  text-wrap: balance;
 }
-.seg button[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
-.toggle { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
-.toggle input { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--ink); flex: none; }
-.toggle span { display: grid; }
-select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.results { display: grid; gap: 16px; }
-.duel { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.side { border-radius: 12px; padding: 16px; display: grid; gap: 2px; min-width: 0; }
-.side.loot { background: var(--loot-soft); }
-.side.love { background: var(--love-soft); }
-.side .name { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
-.side.loot .name, .side.loot .big { color: var(--loot); }
-.side.love .name, .side.love .big { color: var(--love); }
-.big { font-family: var(--display); font-weight: 800; font-size: clamp(38px, 7vw, 60px); line-height: 1.05; font-variant-numeric: tabular-nums; }
-.side .sub { font-size: 13px; color: var(--muted); }
-.verdict { font-family: var(--display); font-weight: 600; font-size: clamp(19px, 2.4vw, 24px); line-height: 1.25; margin: 0; text-wrap: balance; }
-.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-@media (max-width: 480px) { .fact b { font-size: 14px; } .duel { gap: 8px; } .side { padding: 12px; } }
-.fact { border-top: 1px solid var(--line); padding-top: 8px; }
-.fact b { display: block; font-family: var(--mono); font-weight: 500; font-variant-numeric: tabular-nums; font-size: 16px; }
-.fact span { font-size: 12.5px; color: var(--muted); }
-.chart-box { display: grid; gap: 6px; }
-.chart-box h3 { margin: 0; font-size: 14px; font-weight: 600; }
-canvas { width: 100%; height: 240px; display: block; }
-.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--muted); }
-.legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
-footer { font-size: 12.5px; color: var(--muted); display: grid; gap: 4px; max-width: 80ch; }
-footer a { color: inherit; }
-@media (prefers-reduced-motion: no-preference) { .big { transition: color .2s; } }
+h1 .t { color: var(--gold); }
+h1 .l { color: var(--pink); }
+h1 .or { font-size: .55em; vertical-align: .35em; color: var(--ink); }
+.sub { margin: 0; color: var(--dim); font-size: 1rem; max-width: 60ch; }
+.sub b { color: var(--ink); }
+
+/* ---------- scoreboard ---------- */
+.board {
+  padding-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  position: relative;
+}
+.side {
+  border-radius: 18px;
+  padding: 16px 18px 14px;
+  display: grid;
+  gap: 2px;
+  position: relative;
+  min-width: 0;
+  border: 3px solid transparent;
+  transition: transform .2s ease;
+}
+.side.tok { background: linear-gradient(160deg, #ffd34d, var(--gold) 45%, var(--gold-deep)); color: #3a2600; box-shadow: 0 6px 0 #8a5c00; }
+.side.love { background: linear-gradient(160deg, #ff86b9, var(--pink) 45%, var(--pink-deep)); color: #3d0019; box-shadow: 0 6px 0 #7f0d3c; }
+.side .lab { font-family: var(--display); font-size: clamp(.95rem, 2.6vw, 1.25rem); text-transform: uppercase; letter-spacing: .5px; display: flex; align-items: center; gap: 8px; }
+.side .lab svg { width: 30px; height: 30px; flex: none; }
+.side .big { font-family: var(--display); font-size: clamp(2.6rem, 11vw, 5.2rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.side .note { font-size: .9rem; font-weight: 500; }
+.side.win { transform: translateY(-4px) rotate(-.6deg); border-color: var(--ink); }
+.side .crown {
+  position: absolute; top: -13px; right: 12px; box-shadow: 0 3px 0 var(--sky-deep);
+  font-family: var(--display); font-size: .75rem; text-transform: uppercase;
+  background: var(--ink); color: var(--sky-deep); padding: 4px 9px; border-radius: 99px;
+  letter-spacing: .5px;
+}
+.side:not(.win) .crown { display: none; }
+.side.win .crown { animation: bob 1.2s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-3px) rotate(4deg); } }
+
+.tug { grid-column: 1 / -1; display: grid; gap: 6px; }
+.tug .bar { height: 16px; border-radius: 99px; background: var(--pink); overflow: hidden; border: 3px solid var(--sky-deep); }
+.tug .fill { height: 100%; background: var(--gold); width: 50%; transition: width .5s cubic-bezier(.2,.9,.3,1.3); }
+.verdict { margin: 0; font-weight: 700; font-size: 1.05rem; }
+
+/* ---------- play ---------- */
+.play {
+  display: grid; gap: 12px;
+  background: var(--panel);
+  border-radius: 18px;
+  padding: 16px;
+  border: 2px solid var(--line);
+}
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+button { font: inherit; cursor: pointer; }
+.go {
+  flex: 1 1 260px;
+  font-family: var(--display); font-size: clamp(1.2rem, 4vw, 1.6rem); text-transform: uppercase;
+  color: #3a2600; background: var(--gold);
+  border: 0; border-radius: 14px; padding: 14px 18px;
+  box-shadow: 0 6px 0 var(--gold-deep);
+  transition: transform .08s, box-shadow .08s;
+}
+.go:hover { filter: brightness(1.06); }
+.go:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--gold-deep); }
+.go:disabled { opacity: .7; cursor: progress; }
+.ghost {
+  flex: 0 1 auto;
+  font-weight: 700; color: var(--ink); background: transparent;
+  border: 2px solid var(--line); border-radius: 14px; padding: 12px 16px;
+}
+.ghost:hover { border-color: var(--ink); }
+button:focus-visible, input:focus-visible + span, .seg input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.reel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.cell { background: var(--sky-deep); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+.cell .k { font-size: .75rem; text-transform: uppercase; letter-spacing: .8px; color: var(--dim); font-weight: 700; }
+.cell .v { font-family: var(--display); font-size: clamp(1.15rem, 4.5vw, 1.7rem); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.track { height: 8px; border-radius: 99px; background: var(--sky-deep); overflow: hidden; }
+.track i { display: block; height: 100%; width: 0; background: var(--ink); }
+
+.drop {
+  position: relative; overflow: hidden;
+  border-radius: 14px; padding: 14px 16px;
+  background: var(--sky-deep);
+  border: 3px solid var(--common);
+  display: grid; gap: 4px;
+}
+.drop .tier { font-family: var(--display); text-transform: uppercase; font-size: .85rem; letter-spacing: 1px; color: var(--common); }
+.drop .what { font-family: var(--display); font-size: clamp(1.3rem, 4.6vw, 2rem); line-height: 1.05; }
+.drop .why { color: var(--dim); font-size: .95rem; }
+.drop canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.drop[data-tier="legendary"] { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,194,26,.25), 0 0 40px rgba(255,194,26,.35) inset; }
+.drop[data-tier="legendary"] .tier { color: var(--gold); }
+.drop[data-tier="epic"] { border-color: var(--epic); box-shadow: 0 0 0 4px rgba(180,92,255,.25); }
+.drop[data-tier="epic"] .tier { color: var(--epic); }
+.drop[data-tier="mythic"] { border-color: var(--mythic); box-shadow: 0 0 0 4px rgba(255,122,26,.3), 0 0 50px rgba(255,122,26,.35) inset; }
+.drop[data-tier="mythic"] .tier { color: var(--mythic); }
+.drop.pop { animation: pop .45s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pop { 0% { transform: scale(.9); } 100% { transform: scale(1); } }
+.shake { animation: shake .4s; }
+@keyframes shake { 20%,60% { transform: translateX(-4px); } 40%,80% { transform: translateX(4px); } }
+
+.tally { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: .9rem; color: var(--dim); align-items: center; }
+.tally b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: -1px; }
+
+/* ---------- controls ---------- */
+.ctrls {
+  display: grid; gap: 18px 26px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  background: var(--panel);
+  border-radius: 18px; padding: 18px 16px 20px;
+  border: 2px solid var(--line);
+}
+.ctrls h2 { grid-column: 1 / -1; margin: 0; font-family: var(--display); font-weight: 400; font-size: 1.25rem; text-transform: uppercase; letter-spacing: .5px; }
+.f { display: grid; gap: 8px; min-width: 0; }
+.f .top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.f label, .f .q { font-weight: 700; }
+.f output { font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+.f .hint { font-size: .85rem; color: var(--dim); margin: 0; }
+
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; }
+input[type=range]::-webkit-slider-runnable-track { height: 10px; border-radius: 99px; background: var(--sky-deep); }
+input[type=range]::-moz-range-track { height: 10px; border-radius: 99px; background: var(--sky-deep); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); border: 3px solid var(--ink); margin-top: -8px; box-shadow: 0 3px 0 var(--gold-deep); }
+input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--gold); border: 3px solid var(--ink); }
+input[type=range].pk::-webkit-slider-thumb { background: var(--pink); box-shadow: 0 3px 0 var(--pink-deep); }
+input[type=range].pk::-moz-range-thumb { background: var(--pink); }
+input[type=range]:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; border-radius: 8px; }
+
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg label { position: relative; flex: 1 1 auto; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span {
+  display: block; text-align: center; cursor: pointer;
+  padding: 9px 12px; border-radius: 10px; font-weight: 700; font-size: .92rem;
+  background: var(--sky-deep); color: var(--dim); border: 2px solid transparent;
+  transition: background .15s, color .15s, transform .1s;
+}
+.seg input:checked + span { background: var(--ink); color: var(--sky-deep); transform: translateY(-2px); }
+.seg.pk input:checked + span { background: var(--pink); color: #3d0019; }
+
+.sw { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+.sw input { position: absolute; opacity: 0; pointer-events: none; }
+.sw .knob { flex: none; width: 50px; height: 28px; border-radius: 99px; background: var(--sky-deep); position: relative; transition: background .2s; margin-top: 1px; }
+.sw .knob::after { content: ""; position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--dim); transition: transform .2s cubic-bezier(.3,1.6,.5,1), background .2s; }
+.sw input:checked + .knob { background: var(--gold); }
+.sw input:checked + .knob::after { transform: translateX(22px); background: var(--ink); }
+.sw input:focus-visible + .knob { outline: 3px solid var(--ink); outline-offset: 2px; }
+.sw .txt { display: grid; gap: 2px; }
+.sw .txt b { font-weight: 700; }
+.sw .txt small { color: var(--dim); font-size: .85rem; line-height: 1.4; }
+
+/* ---------- share + footer ---------- */
+.share { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.share code { flex: 1 1 260px; min-width: 0; font-family: var(--body); font-size: .92rem; background: var(--sky-deep); padding: 10px 12px; border-radius: 10px; overflow-wrap: anywhere; }
+.copied { font-size: .85rem; color: var(--gold); min-height: 1em; }
+footer { font-size: .8rem; color: var(--dim); display: grid; gap: 6px; max-width: 75ch; }
+footer a { color: var(--ink); }
+
+@media (max-width: 520px) {
+  body { padding-block: 14px 40px; }
+  .wrap { gap: 16px; }
+  .sub { font-size: .92rem; }
+  .wide { display: none; }
+  .side { padding: 12px 12px 10px; }
+  .side .lab { font-size: .9rem; gap: 6px; }
+  .side .lab svg { width: 22px; height: 22px; }
+  .side .big { font-size: clamp(2.2rem, 12vw, 3.2rem); }
+  .side .note { font-size: .8rem; }
+  .side .crown { font-size: .65rem; padding: 3px 7px; right: 8px; }
+  .verdict { font-size: .95rem; }
+  .play { padding: 12px; }
+  .go { padding: 12px 14px; }
+  .cell { padding: 8px 10px; }
+  .cell .k { font-size: .66rem; letter-spacing: .5px; }
+  .drop .what { font-size: 1.2rem; }
+  .drop .why { font-size: .88rem; }
+}
+@media (max-width: 360px) {
+  .side .lab svg { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 </style>
-</head><body>
 
 <div class="wrap">
   <header>
-    <div class="kicker">The calculator from the paper</div>
-    <h1><span class="loot">Loot</span> or <span class="love">Love?</span></h1>
-    <p class="lede">Will you find the Fortnite Pirate Shop Token before you get a girlfriend? Put your own numbers in. Everything runs on the same model as the paper, so blame the maths, not me.</p>
+    <h1><span class="t">Token</span> <span class="or">or</span> <span class="l">True Love?</span></h1>
+    <p class="sub">Your odds of finding the Pirate Shop token <span class="wide">(1 in 137,500 chests)</span> vs getting a girlfriend, before the season ends on <b>5 December</b>. <b id="daysLeft">25</b> days left.</p>
   </header>
 
-  <div class="grid">
-    <form class="panel controls" id="form" autocomplete="off">
-      <div class="group">
-        <h2>Fortnite</h2>
-        <div class="field">
-          <label for="hours">Hours a week <output id="hoursOut" for="hours"></output></label>
-          <input type="range" id="hours" min="0" max="60" step="1" value="10">
-        </div>
-        <div class="field">
-          <span class="lab">Mode</span>
-          <div class="seg" id="mode" role="group" aria-label="Mode">
-            <button type="button" data-v="Solo" aria-pressed="true">Solo</button>
-            <button type="button" data-v="Duo" aria-pressed="false">Duo</button>
-            <button type="button" data-v="Trio" aria-pressed="false">Trio</button>
-            <button type="button" data-v="Squad" aria-pressed="false">Squad</button>
-          </div>
-          <span class="hint">If anyone in your group finds the token, everyone gets it.</span>
-        </div>
-        <label class="toggle" for="tstar">
-          <input type="checkbox" id="tstar">
-          <span><b>Leave at 5:49</b><span class="hint">Loot, then leave. It's the survival time that gets the most chests per hour.</span></span>
-        </label>
-      </div>
+  <section class="board" aria-live="polite">
+    <div class="side tok" id="sTok">
+      <span class="crown">Winning</span>
+      <span class="lab">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="12" width="26" height="16" rx="3" fill="#7a4a00"/><path d="M3 13c0-6 5-9 13-9s13 3 13 9z" fill="#a86a00"/><rect x="3" y="12" width="26" height="3" fill="#3a2600"/><rect x="13" y="11" width="6" height="8" rx="1.5" fill="#fff8ea"/><circle cx="16" cy="15" r="1.4" fill="#3a2600"/></svg>
+        Token
+      </span>
+      <span class="big" id="pTok">0.8%</span>
+      <span class="note" id="nTok">50/50 shot after 3,150 h</span>
+    </div>
+    <div class="side love" id="sLove">
+      <span class="crown">Winning</span>
+      <span class="lab">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 28S3 20 3 11.5C3 7.4 6.2 4.5 9.8 4.5c2.7 0 4.9 1.5 6.2 3.6 1.3-2.1 3.5-3.6 6.2-3.6C25.8 4.5 29 7.4 29 11.5 29 20 16 28 16 28z" fill="#7f0d3c"/><path d="M9 9.5c1-1.3 2.4-1.8 3.6-1.6" stroke="#fff8ea" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+        Girlfriend
+      </span>
+      <span class="big" id="pLove">2.5%</span>
+      <span class="note" id="nLove">by 5 December</span>
+    </div>
+    <div class="tug">
+      <div class="bar" role="img" id="tugBar" aria-label="Token versus girlfriend"><div class="fill" id="tugFill"></div></div>
+      <p class="verdict" id="verdict">Girlfriend, easily.</p>
+    </div>
+  </section>
 
-      <div class="group">
-        <h2>You</h2>
-        <div class="field">
-          <label for="looks">Looks <output id="looksOut" for="looks"></output></label>
-          <input type="range" id="looks" min="1" max="99" step="1" value="50">
-        </div>
-        <div class="field">
-          <label for="pers">Personality and social skills <output id="persOut" for="pers"></output></label>
-          <input type="range" id="pers" min="1" max="99" step="1" value="50">
-          <span class="hint">Confidence, being funny, talking to people without bringing up Fortnite.</span>
-        </div>
-        <div class="field">
-          <span class="lab">How hard you're trying</span>
-          <div class="seg" id="effort" role="group" aria-label="Effort">
-            <button type="button" data-v="Not looking" aria-pressed="false">Not looking</button>
-            <button type="button" data-v="Casually looking" aria-pressed="true">Casually</button>
-            <button type="button" data-v="Actively trying" aria-pressed="false">Actively trying</button>
-            <button type="button" data-v="Going all out" aria-pressed="false">All out</button>
-          </div>
-        </div>
-      </div>
+  <section class="play">
+    <div class="btns">
+      <button class="go" id="go" type="button">Play out my season</button>
+      <button class="ghost" id="go100" type="button">Run it 100 times</button>
+    </div>
+    <div class="reel">
+      <div class="cell"><div class="k">Day</div><div class="v" id="rDay">0</div></div>
+      <div class="cell"><div class="k">Chests opened</div><div class="v" id="rChest">0</div></div>
+      <div class="cell"><div class="k">People met</div><div class="v" id="rMet">0</div></div>
+    </div>
+    <div class="track"><i id="rTrack"></i></div>
+    <div class="drop" id="drop" data-tier="common">
+      <canvas id="fx" aria-hidden="true"></canvas>
+      <span class="tier" id="dTier">Ready</span>
+      <span class="what" id="dWhat">Hit the button to play out the rest of your season.</span>
+      <span class="why" id="dWhy">It rolls every day until 5 December using your odds, so every run is different.</span>
+    </div>
+    <div class="tally" id="tally">
+      <span>Your seasons so far:</span>
+      <span><i class="dot" style="background:var(--gold)"></i>Token <b id="tT">0</b></span>
+      <span><i class="dot" style="background:var(--pink)"></i>Girlfriend <b id="tL">0</b></span>
+      <span><i class="dot" style="background:var(--mythic)"></i>Both <b id="tB">0</b></span>
+      <span><i class="dot" style="background:var(--common)"></i>Nothing <b id="tN">0</b></span>
+    </div>
+  </section>
 
-      <div class="group">
-        <h2>Moves</h2>
-        <label class="toggle" for="lobby">
-          <input type="checkbox" id="lobby">
-          <span><b>DM someone from every lobby</b><span class="hint">Instead of the usual three cold DMs a week.</span></span>
-        </label>
-        <label class="toggle" for="apps">
-          <input type="checkbox" id="apps">
-          <span><b>Use dating apps</b><span class="hint">About 40 swipes a day, fewer if there's nobody near you.</span></span>
-        </label>
-        <div class="field" id="placeField" hidden>
-          <label for="place">Where you live</label>
-          <select id="place">
-            <option>City</option>
-            <option selected>Suburb</option>
-            <option>Small town</option>
-            <option>Rural</option>
-          </select>
-        </div>
-      </div>
-    </form>
+  <section class="ctrls" aria-label="Your stats">
+    <h2>Your stats</h2>
 
-    <section class="results" aria-live="polite">
-      <div class="panel results">
-        <div class="duel">
-          <div class="side loot">
-            <span class="name">Pirate Shop Token</span>
-            <span class="big" id="pTok">0.8%</span>
-            <span class="sub" id="tokSub">by the end of the season</span>
-          </div>
-          <div class="side love">
-            <span class="name">Girlfriend</span>
-            <span class="big" id="pGf">2.5%</span>
-            <span class="sub" id="gfSub">by the end of the season</span>
-          </div>
-        </div>
-        <p class="verdict" id="verdict"></p>
-        <div class="facts">
-          <div class="fact"><b id="fXmas">3.5%</b><span>Girlfriend by Christmas</span></div>
-          <div class="fact"><b id="fCross">23 h</b><span>Where the token overtakes you</span></div>
-          <div class="fact"><b id="fMedian">3,240 h</b><span>Median play time to find the token</span></div>
-        </div>
-      </div>
+    <div class="f">
+      <div class="top"><label for="hours">Fortnite per week</label><output id="hoursOut" for="hours">10 hours</output></div>
+      <input type="range" id="hours" min="0" max="60" step="1" value="10">
+    </div>
 
-      <div class="panel chart-box">
-        <h3>Your odds by the end of the season, by hours played</h3>
-        <canvas id="chart" role="img" aria-label="Chance of the token and of a girlfriend by hours of Fortnite per week"></canvas>
-        <div class="legend">
-          <span><i style="background:var(--loot)"></i>Token</span>
-          <span><i style="background:var(--love)"></i>Girlfriend</span>
-          <span>Dot is you</span>
-        </div>
+    <div class="f">
+      <span class="q" id="modeQ">You usually play</span>
+      <div class="seg" role="radiogroup" aria-labelledby="modeQ">
+        <label><input type="radio" name="mode" id="mSolo" value="solo" checked><span>Solo</span></label>
+        <label><input type="radio" name="mode" id="mDuo" value="duo"><span>Duos</span></label>
+        <label><input type="radio" name="mode" id="mSquad" value="squad"><span>Squads</span></label>
       </div>
-    </section>
-  </div>
+      <p class="hint">In duos and squads the token goes to everyone, so your mates' chests count too.</p>
+    </div>
+
+    <div class="f">
+      <span class="q" id="effQ">How hard you're trying to find someone</span>
+      <div class="seg pk" role="radiogroup" aria-labelledby="effQ">
+        <label><input type="radio" name="effort" id="e0" value="0.2"><span>Not looking</span></label>
+        <label><input type="radio" name="effort" id="e1" value="1" checked><span>Casually</span></label>
+        <label><input type="radio" name="effort" id="e2" value="2.43"><span>Actually trying</span></label>
+        <label><input type="radio" name="effort" id="e3" value="4.66"><span>All out</span></label>
+      </div>
+    </div>
+
+    <div class="f">
+      <div class="top"><label for="looks">Looks (be honest)</label><output id="looksOut" for="looks">average</output></div>
+      <input type="range" class="pk" id="looks" min="1" max="99" step="1" value="50">
+    </div>
+
+    <div class="f">
+      <div class="top"><label for="pers">Rizz</label><output id="persOut" for="pers">average</output></div>
+      <input type="range" class="pk" id="pers" min="1" max="99" step="1" value="50">
+      <p class="hint">Funny, confident, can talk about something other than Fortnite.</p>
+    </div>
+
+    <div class="f">
+      <div class="top"><label for="height">Height</label><output id="heightOut" for="height">5'9"</output></div>
+      <input type="range" class="pk" id="height" min="152" max="203" step="1" value="176">
+      <p class="hint">Average for US men in their twenties is 5'9". Taller helps a bit, up to about 6'2".</p>
+    </div>
+
+    <label class="sw" for="apps">
+      <input type="checkbox" id="apps"><span class="knob"></span>
+      <span class="txt"><b>I'm on dating apps</b><small>Roughly doubles your odds, mostly because you talk to way more people.</small></span>
+    </label>
+
+    <label class="sw" for="leave">
+      <input type="checkbox" id="leave"><span class="knob"></span>
+      <span class="txt"><b>I leave at 5:49</b><small>Leave each match 5 minutes 49 seconds after you land and you open more chests per hour. In squads, only if everyone leaves with you.</small></span>
+    </label>
+  </section>
+
+  <section class="share">
+    <code id="shareText">My odds by 5 Dec: 2.5% girlfriend, 0.8% Pirate Shop token. Token or True Love?</code>
+    <button class="ghost" id="copy" type="button">Copy my odds</button>
+    <span class="copied" id="copied" aria-live="polite"></span>
+  </section>
 
   <footer>
-    <p>Built on the model from <i>Loot or Love? Will a Fortnite Player Find the Pirate Shop Token Before a Girlfriend?</i> (D. Thompson, 2026). Token odds are Epic's 1 in 137,500 per chest. The dating side is calibrated to Pew and Stanford survey data, but things like the DM reply rate and the effort multipliers are guesses. The paper tests how much they matter. The paper's headline 2.5% is the average over all guys; a guy at the 50th percentile for everything comes out a bit lower, because a few very lucky guys drag the average up.</p>
-    <p>Code and paper: <a href="https://github.com/djangothompson12-alt/Fortnite-Token-Probability-" target="_blank" rel="noopener">github.com/djangothompson12-alt/Fortnite-Token-Probability-</a>. Not affiliated with Epic Games. The maths is real, the advice is not.</p>
+    <p>Based on the paper <i>Token or True Love?</i> by Django Thompson. Paper and code: <a href="https://github.com/djangothompson12-alt/Fortnite-Token-Probability-" target="_blank" rel="noopener">github.com/djangothompson12-alt/Fortnite-Token-Probability-</a>. This is a cut-down version of the model in the paper. Height uses CDC measurements and an online dating study; most of the dating side is educated guessing. AI was used to help code this.</p>
+    <p>Fortnite is a trademark of Epic Games, Inc. Portions of the materials used are trademarks and/or copyrighted works of Epic Games, Inc. All rights reserved by Epic. This material is not official and is not endorsed by Epic.</p>
   </footer>
 </div>
 
 <script>
 (function () {
-  // ---- model constants (from lootorlove/params.py and the calibration in results_noapp.json) ----
-  const C = {
-    M: 29.790491956944958, rho: 0.07872894127566003, drake: 2.975e-05,
-    E_CONTEXT: 0.6, S0: 0.51, G0: 1.08, BETA: 0.8, DISPLACE: 0.2,
-    OFF_LOOKS: 4, LOOKS: 11, RES_SD: 0.5,
-    APP_MATCH: 0.006, P_CONVO: 0.3, P_DATE: 0.15, P_DM_REPLY: 0.08, DMS_BASE: 3,
-    swipes: { "City": 40, "Suburb": 40, "Small town": 28.84, "Rural": 10.68 },
-    EFFORT: { "Not looking": 0.2, "Casually looking": 1, "Actively trying": 2.5, "Going all out": 5 },
-    P_TOKEN: 1 / 137500,
-    CPH: 29.9, CPH_TSTAR: 39.6,        // chests per hour: normal play, and leaving at 5:49
-    MPH: 4.77, MPH_TSTAR: 5.31,        // matches per hour, same two cases
-    GROUP: { Solo: 1, Duo: 2 * 0.85, Trio: 3 * 0.75, Squad: 4 * 0.65 },
-    SOLO_MEDIAN_H: 3244
-  };
-  const SEASON_END = new Date(2026, 11, 5, 23, 59);
-  const XMAS = new Date(2026, 11, 25, 0, 0);
+  var P_TOKEN = 1 / 137500;
+  var RATE = { solo: 30.3, duo: 51.6, squad: 78.8 }; // group chests per hour of play incl. lobby
+  var LEAVE = 1.375;
+  var LAMBDA0 = 1.169e-3, K = 0.01823, APPS = 1.84;
+  var SL = 0.55, SP = 0.41;
+  var H_MEAN = 176.3, H_BETA = 0.0246, H_CAP = 188;
+  var MET_PER_DAY = 1;
+  var SEASON_END = new Date(Date.UTC(2026, 11, 5, 0, 0, 0));
+  var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function (id) { return document.getElementById(id); };
+  var S = {};
 
-  // inverse standard normal (Acklam)
   function invNorm(p) {
-    const a = [-39.69683028665376, 220.9460984245205, -275.9285104469687, 138.357751867269, -30.66479806614716, 2.506628277459239];
-    const b = [-54.47609879822406, 161.5858368580409, -155.6989798598866, 66.80131188771972, -13.28068155288572];
-    const c = [-0.007784894002430293, -0.3223964580411365, -2.400758277161838, -2.549732539343734, 4.374664141464968, 2.938163982698783];
-    const d = [0.007784695709041462, 0.3224671290700398, 2.445134137142996, 3.754408661907416];
-    const pl = 0.02425;
-    if (p < pl) { const q = Math.sqrt(-2 * Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
-    if (p > 1 - pl) { const q = Math.sqrt(-2 * Math.log(1 - p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) / ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
-    const q = p - 0.5, r = q * q;
-    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q / (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+    var a=[-39.6968302866538,220.946098424521,-275.928510446969,138.357751867269,-30.6647980661472,2.50662827745924],
+        b=[-54.4760987982241,161.585836858041,-155.698979859887,66.8013118877197,-13.2806815528857],
+        c=[-0.00778489400243029,-0.322396458041136,-2.40085937867524,-2.54973253934373,4.37466414146497,2.93816398269878],
+        d=[0.00778469570904146,0.32246712907004,2.445134137143,3.75440866190742], q, r;
+    if (p < 0.02425) { q = Math.sqrt(-2*Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+    if (p > 0.97575) { q = Math.sqrt(-2*Math.log(1-p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+    q = p - 0.5; r = q*q;
+    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
   }
-  function looksMult(u, range) { const k = Math.log(range); return Math.exp(k * u) * k / (Math.exp(k) - 1); }
-
-  // yearly hazard of getting a girlfriend
-  function gfRate(h, s) {
-    const g = h / 7;
-    const social = Math.max(0, C.S0 - C.DISPLACE * (g - C.G0));
-    const off = C.M * 365 * (C.E_CONTEXT + C.BETA * social) * C.drake * looksMult(s.looks, C.OFF_LOOKS);
-    const mph = s.tstar ? C.MPH_TSTAR : C.MPH;
-    const dms = s.lobby ? Math.max(C.DMS_BASE, h * mph) : C.DMS_BASE;
-    const tail = C.P_CONVO * C.P_DATE * C.rho;
-    const app = s.apps ? 365 * C.swipes[s.place] * C.APP_MATCH * tail : 0;
-    const dm = 52 * dms * C.P_DM_REPLY * tail;
-    const r = Math.exp(C.RES_SD * invNorm(s.pers) - C.RES_SD * C.RES_SD / 2);
-    return r * C.EFFORT[s.effort] * (off + looksMult(s.looks, C.LOOKS) * (app + dm));
+  function words(n) {
+    if (n >= 45 && n <= 55) return "average";
+    if (n >= 90) return "top " + (100 - n) + "%";
+    if (n <= 10) return "bottom " + n + "%";
+    return "beats " + n + "% of guys";
   }
-  function tokChestsPerHour(s) { return (s.tstar ? C.CPH_TSTAR : C.CPH) * C.GROUP[s.mode]; }
-  function pGf(h, days, s) { return 1 - Math.exp(-gfRate(h, s) * days / 365); }
-  function pTok(h, days, s) { return 1 - Math.exp(-tokChestsPerHour(s) * h * (days / 7) * C.P_TOKEN); }
+  function ftin(cm) { var t = Math.round(cm / 2.54), f = Math.floor(t / 12); return f + "'" + (t - f * 12) + '"'; }
+  function pctStr(x) { var v = x * 100; return v > 0 && v < 0.1 ? "<0.1%" : (v < 10 ? v.toFixed(1) : v.toFixed(0)) + "%"; }
+  function radio(name) { var el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : null; }
+  function fmt(n) { return Math.round(n).toLocaleString("en-GB"); }
 
-  // ---- state ----
-  const $ = id => document.getElementById(id);
-  const state = { hours: 10, mode: "Solo", tstar: false, looks: 0.5, pers: 0.5, effort: "Casually looking", lobby: false, apps: false, place: "Suburb" };
+  // smooth count-up for the two big numbers
+  var shown = { pTok: 0, pLove: 0 };
+  function animateTo(id, target) {
+    var el = $(id), from = shown[id], t0 = null, dur = RM ? 0 : 450;
+    shown[id] = target;
+    if (!dur) { el.textContent = pctStr(target); return; }
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = pctStr(from + (target - from) * e);
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
 
-  function bindSeg(id, key) {
-    $(id).addEventListener("click", e => {
-      const b = e.target.closest("button"); if (!b) return;
-      for (const x of $(id).querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
-      state[key] = b.dataset.v; update();
+  function model() {
+    var h = +$("hours").value, looks = +$("looks").value, pers = +$("pers").value, cm = +$("height").value;
+    var mode = radio("mode") || "solo", effort = parseFloat(radio("effort") || "1");
+    var apps = $("apps").checked, leave = $("leave").checked;
+    var days = Math.max(0, (SEASON_END - new Date()) / 86400000);
+    var tm = leave ? LEAVE : 1;
+    var lm = effort * Math.exp(SL * invNorm(looks / 100) + SP * invNorm(pers / 100)) * (apps ? APPS : 1)
+             * Math.exp(H_BETA * (Math.min(cm, H_CAP) - H_MEAN));
+    var chestsPerDay = RATE[mode] * tm * h / 7;
+    var lovePerDay = LAMBDA0 * Math.exp(-K * h) * lm;
+    var tokP = function (x, d) { return 1 - Math.exp(-RATE[mode] * tm * x * (d / 7) * P_TOKEN); };
+    var loveP = function (x, d) { return 1 - Math.exp(-LAMBDA0 * Math.exp(-K * x) * lm * d); };
+    var cross = null;
+    for (var x = 0; x <= 200; x += 0.5) { if (tokP(x, 30) > loveP(x, 30)) { cross = x; break; } }
+    return {
+      h: h, mode: mode, looks: looks, pers: pers, cm: cm, days: days,
+      pt: tokP(h, days), pl: loveP(h, days),
+      chestsPerDay: chestsPerDay, lovePerDay: lovePerDay,
+      tokDay: 1 - Math.exp(-chestsPerDay * P_TOKEN),
+      loveDay: 1 - Math.exp(-lovePerDay),
+      median: Math.LN2 / (RATE[mode] * tm * P_TOKEN), cross: cross,
+      metPerDay: MET_PER_DAY * Math.exp(-K * h)
+    };
+  }
+
+  function render() {
+    S = model();
+    $("hoursOut").textContent = S.h === 0 ? "none" : S.h + (S.h === 1 ? " hour" : " hours");
+    $("looksOut").textContent = words(S.looks);
+    $("persOut").textContent = words(S.pers);
+    $("heightOut").textContent = ftin(S.cm) + " (" + S.cm + " cm)";
+    $("daysLeft").textContent = Math.ceil(S.days);
+    animateTo("pTok", S.pt);
+    animateTo("pLove", S.pl);
+    $("nTok").textContent = S.h === 0 ? "you have to actually play" : "50/50 shot after " + fmt(S.median) + " hours";
+    $("nLove").textContent = "by 5 December";
+    var total = S.pt + S.pl;
+    $("tugFill").style.width = (total > 0 ? (S.pt / total) * 100 : 50).toFixed(1) + "%";
+    $("tugBar").setAttribute("aria-label", "Token " + pctStr(S.pt) + " versus girlfriend " + pctStr(S.pl));
+    $("sTok").classList.toggle("win", S.pt > S.pl);
+    $("sLove").classList.toggle("win", S.pl >= S.pt);
+
+    var v, ratio = S.pl / Math.max(S.pt, 1e-9), cr = S.cross === null ? "200+" : Math.round(S.cross);
+    if (S.days === 0) v = "The season's over. Did you get either?";
+    else if (S.h === 0) v = "You don't play, so the token's out. Girlfriend wins by default.";
+    else if (ratio >= 3) v = "Girlfriend, easily. About " + Math.round(ratio) + "x more likely. The token only takes over past " + cr + " hours a week.";
+    else if (ratio >= 1) v = "Girlfriend, but only just. Past " + cr + " hours a week the token takes over.";
+    else if (ratio > 1 / 3) v = "The token, narrowly. Not because it's likely. Because you're never outside.";
+    else v = "The token. That says more about your screen time than the token.";
+    $("verdict").textContent = v;
+    $("shareText").textContent = "My odds by 5 Dec: " + pctStr(S.pl) + " girlfriend, " + pctStr(S.pt) + " Pirate Shop token (" + S.h + " h a week, " + S.mode + "). Token or True Love?";
+  }
+
+  // ---------- season roll ----------
+  var tally = { T: 0, L: 0, B: 0, N: 0 };
+  try { var saved = JSON.parse(localStorage.getItem("totl-tally") || "null"); if (saved && typeof saved.T === "number") tally = saved; } catch (e) {}
+  function showTally() { $("tT").textContent = tally.T; $("tL").textContent = tally.L; $("tB").textContent = tally.B; $("tN").textContent = tally.N; }
+  function saveTally() { try { localStorage.setItem("totl-tally", JSON.stringify(tally)); } catch (e) {} }
+
+  function rollSeason(m) {
+    var n = Math.ceil(m.days), tokDay = null, loveDay = null;
+    for (var d = 1; d <= n; d++) {
+      if (tokDay === null && Math.random() < m.tokDay) tokDay = d;
+      if (loveDay === null && Math.random() < m.loveDay) loveDay = d;
+    }
+    return { n: n, tokDay: tokDay, loveDay: loveDay };
+  }
+
+  function outcome(r, m) {
+    var t = r.tokDay, l = r.loveDay;
+    if (t && l) return { key: "B", tier: "mythic", label: "Mythic",
+      what: "Both. Token on day " + t + ", girlfriend on day " + l + ".",
+      why: (t < l ? "The token came first. She will hear about it." : "She came first. You still opened chests on the date.") + " Screenshot this, it basically never happens." };
+    if (t) return { key: "T", tier: "legendary", label: "Legendary",
+      what: "Token found on day " + t + "!",
+      why: "Every V-Bucks item free for 14 days. Still single though. Only " + pctStr(m.pt) + " of seasons like yours end like this." };
+    if (l) return { key: "L", tier: "epic", label: "Epic",
+      what: "Girlfriend on day " + l + ".",
+      why: "No token, but honestly the better drop. " + pctStr(m.pl) + " of seasons like yours go this way." };
+    return { key: "N", tier: "common", label: "Common",
+      what: "Nothing. Single and tokenless.",
+      why: "Same as about " + Math.round((1 - m.pt) * (1 - m.pl) * 100) + "% of players like you. Run it back." };
+  }
+
+  function showDrop(o, big) {
+    var drop = $("drop");
+    drop.setAttribute("data-tier", o.tier);
+    $("dTier").textContent = o.label;
+    $("dWhat").textContent = o.what;
+    $("dWhy").textContent = o.why;
+    if (RM) return;
+    drop.classList.remove("pop", "shake"); void drop.offsetWidth;
+    drop.classList.add(o.tier === "common" ? "shake" : "pop");
+    if (big) burst(o.tier);
+  }
+
+  // particle burst
+  var fx = $("fx"), ctx = fx.getContext("2d"), parts = [], raf = null;
+  function burst(tier) {
+    var r = fx.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    fx.width = r.width * dpr; fx.height = r.height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var cols = tier === "legendary" ? ["#ffc21a", "#fff8ea", "#ffe08a"] : tier === "mythic" ? ["#ff7a1a", "#ffc21a", "#ff4f9a", "#fff8ea"] : ["#b45cff", "#ff4f9a", "#fff8ea"];
+    var count = tier === "mythic" ? 140 : tier === "legendary" ? 110 : 70;
+    for (var i = 0; i < count; i++) {
+      var a = Math.random() * Math.PI * 2, s = 2 + Math.random() * 6;
+      parts.push({ x: r.width * 0.5, y: r.height * 0.55, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 3, life: 60 + Math.random() * 40, c: cols[i % cols.length], w: 3 + Math.random() * 5, rot: Math.random() * 6 });
+    }
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function tick() {
+    var r = fx.getBoundingClientRect();
+    ctx.clearRect(0, 0, r.width, r.height);
+    parts = parts.filter(function (p) { return p.life > 0; });
+    parts.forEach(function (p) {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.18; p.vx *= 0.985; p.life--; p.rot += 0.2;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.globalAlpha = Math.min(1, p.life / 30);
+      ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.w / 4, p.w, p.w / 2); ctx.restore();
     });
+    raf = parts.length ? requestAnimationFrame(tick) : null;
   }
-  bindSeg("mode", "mode"); bindSeg("effort", "effort");
-  $("hours").addEventListener("input", e => { state.hours = +e.target.value; update(); });
-  $("looks").addEventListener("input", e => { state.looks = +e.target.value / 100; update(); });
-  $("pers").addEventListener("input", e => { state.pers = +e.target.value / 100; update(); });
-  $("tstar").addEventListener("change", e => { state.tstar = e.target.checked; update(); });
-  $("lobby").addEventListener("change", e => { state.lobby = e.target.checked; update(); });
-  $("apps").addEventListener("change", e => { state.apps = e.target.checked; $("placeField").hidden = !e.target.checked; update(); });
-  $("place").addEventListener("change", e => { state.place = e.target.value; update(); });
-  $("form").addEventListener("submit", e => e.preventDefault());
 
-  function pct(p) {
-    const v = p * 100;
-    if (v <= 0) return "0%";
-    if (v < 0.1) return "<0.1%";
-    if (v < 10) return v.toFixed(1) + "%";
-    return Math.round(v) + "%";
-  }
-  function ord(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
-  function daysUntil(d) { return Math.max(0, (d - new Date()) / 864e5); }
+  var busy = false;
+  function setBusy(b) { busy = b; $("go").disabled = b; $("go100").disabled = b; $("go").textContent = b ? "Rolling..." : "Play out my season"; }
 
-  function crossover(days, s) {
-    let prev = null;
-    for (let h = 0; h <= 80; h += 0.25) {
-      const diff = pGf(h, days, s) - pTok(h, days, s);
-      if (prev !== null && prev > 0 && diff <= 0) return h;
-      prev = diff;
+  $("go").addEventListener("click", function () {
+    if (busy) return;
+    var m = model(), r = rollSeason(m), o = outcome(r, m);
+    var n = r.n, stopDay = n, dur = RM ? 0 : 2200;
+    if (n === 0) { showDrop({ tier: "common", label: "Over", what: "The season's over.", why: "Come back next season." }, false); return; }
+    setBusy(true);
+    $("drop").setAttribute("data-tier", "common");
+    $("dTier").textContent = "Rolling";
+    $("dWhat").textContent = "Day 1 of " + n + "...";
+    $("dWhy").textContent = "Opening chests. Meeting people. Mostly opening chests.";
+    var t0 = null;
+    function frame(ts) {
+      if (t0 === null) t0 = ts;
+      var k = dur ? Math.min(1, (ts - t0) / dur) : 1;
+      var e = k < 1 ? 1 - Math.pow(1 - k, 2) : 1;
+      var day = Math.max(1, Math.round(e * stopDay));
+      $("rDay").textContent = day;
+      $("rChest").textContent = fmt(m.chestsPerDay * day);
+      $("rMet").textContent = fmt(m.metPerDay * day);
+      $("rTrack").style.width = (day / n * 100).toFixed(1) + "%";
+      if (k < 1) { $("dWhat").textContent = "Day " + day + " of " + n + "..."; requestAnimationFrame(frame); return; }
+      tally[o.key]++; saveTally(); showTally();
+      showDrop(o, true);
+      setBusy(false);
     }
-    return pGf(0, days, s) <= 0 ? 0 : null;
-  }
+    requestAnimationFrame(frame);
+  });
 
-  function verdict(t, g, s) {
-    if (s.hours === 0) return "You don't play, so the token's off the table. Respect.";
-    const ratio = g / t;
-    if (ratio >= 3) return "Girlfriend, comfortably. Your odds of love are " + Math.round(ratio) + " times your odds of the token.";
-    if (ratio >= 1.15) return "Girlfriend, but it's closer than it should be.";
-    if (ratio > 1 / 1.15) return "Basically a coin flip between the two. Both are unlikely, so don't get excited.";
-    if (ratio > 1 / 3) return "The token's more likely, which says a lot about your week.";
-    return "The token is " + Math.round(1 / ratio) + " times more likely than a girlfriend. You're cooked.";
-  }
+  $("go100").addEventListener("click", function () {
+    if (busy) return;
+    var m = model(), c = { T: 0, L: 0, B: 0, N: 0 };
+    for (var i = 0; i < 100; i++) { var o = outcome(rollSeason(m), m); c[o.key]++; tally[o.key]++; }
+    saveTally(); showTally();
+    $("rDay").textContent = Math.ceil(m.days);
+    $("rChest").textContent = fmt(m.chestsPerDay * Math.ceil(m.days) * 100);
+    $("rMet").textContent = fmt(m.metPerDay * Math.ceil(m.days) * 100);
+    $("rTrack").style.width = "100%";
+    var best = c.B ? "mythic" : c.T ? "legendary" : c.L ? "epic" : "common";
+    showDrop({ tier: best, label: "100 seasons",
+      what: "Girlfriend in " + (c.L + c.B) + " of 100. Token in " + (c.T + c.B) + " of 100.",
+      why: c.N + " of 100 seasons ended with nothing. " + (c.B ? "One had both. Unreal." : c.T ? "You did find a token in " + c.T + ". Respect." : "Not a single token. Told you.") }, best !== "common");
+  });
 
-  function update() {
-    $("hoursOut").textContent = state.hours + " h";
-    $("looksOut").textContent = ord(Math.round(state.looks * 100)) + " percentile";
-    $("persOut").textContent = ord(Math.round(state.pers * 100)) + " percentile";
+  $("copy").addEventListener("click", function () {
+    var t = $("shareText").textContent;
+    var fail = function () {
+      var rg = document.createRange(); rg.selectNodeContents($("shareText"));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(rg);
+      $("copied").textContent = "Selected. Copy it from there.";
+    };
+    try { navigator.clipboard.writeText(t).then(function () { $("copied").textContent = "Copied"; }, fail); } catch (e) { fail(); }
+  });
 
-    const dSeason = daysUntil(SEASON_END), dXmas = daysUntil(XMAS);
-    const over = dSeason <= 0;
-    const t = pTok(state.hours, dSeason, state), g = pGf(state.hours, dSeason, state);
-    $("pTok").textContent = over ? "–" : pct(t);
-    $("pGf").textContent = over ? "–" : pct(g);
-    const dl = Math.ceil(dSeason);
-    $("tokSub").textContent = over ? "The season's over" : "by 5 Dec, " + dl + " day" + (dl === 1 ? "" : "s") + " away";
-    $("gfSub").textContent = over ? "The season's over" : "by 5 Dec, same deadline";
-    $("verdict").textContent = over ? "The token season has ended. The girlfriend one hasn't." : verdict(t, g, state);
-    $("fXmas").textContent = dXmas > 0 ? pct(pGf(state.hours, dXmas, state)) : "–";
-    const x = over ? null : crossover(dSeason, state);
-    $("fCross").textContent = x === null ? "Never" : (x === 0 ? "Already" : Math.round(x) + " h a week");
-    const med = C.SOLO_MEDIAN_H * C.CPH / tokChestsPerHour(state);
-    $("fMedian").textContent = Math.round(med).toLocaleString("en-GB") + " h";
-    draw(dSeason);
-  }
+  ["hours", "looks", "pers", "height", "apps", "leave"].forEach(function (id) { $(id).addEventListener("input", render); $(id).addEventListener("change", render); });
+  Array.prototype.forEach.call(document.querySelectorAll("input[type=radio]"), function (el) { el.addEventListener("change", render); });
 
-  // ---- chart ----
-  const cv = $("chart");
-  function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
-  function draw(days) {
-    const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
-    if (!W) return;
-    cv.width = W * dpr; cv.height = H * dpr;
-    const ctx = cv.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-    const L = 44, R = 12, T = 10, B = 30, pw = W - L - R, ph = H - T - B;
-    const hs = []; for (let h = 0; h <= 60; h += 0.5) hs.push(h);
-    const tk = hs.map(h => pTok(h, days, state)), gf = hs.map(h => pGf(h, days, state));
-    let ymax = Math.max(...tk, ...gf, 0.005) * 100 * 1.12;
-    const steps = [0.5, 1, 2, 5, 10, 20, 25];
-    let step = steps.find(s => ymax / s <= 5) || 25; ymax = Math.ceil(ymax / step) * step;
-    const X = h => L + pw * h / 60, Y = p => T + ph * (1 - p * 100 / ymax);
-    ctx.font = "12px " + css("--body"); ctx.fillStyle = css("--muted"); ctx.strokeStyle = css("--line"); ctx.lineWidth = 1;
-    ctx.textAlign = "right"; ctx.textBaseline = "middle";
-    for (let v = 0; v <= ymax + 1e-9; v += step) {
-      const y = Math.round(Y(v / 100)) + 0.5;
-      ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(W - R, y); ctx.stroke();
-      ctx.fillText((step < 1 ? v.toFixed(1) : v) + "%", L - 6, y);
-    }
-    ctx.textAlign = "center"; ctx.textBaseline = "top";
-    for (let h = 0; h <= 60; h += 10) ctx.fillText(h + " h", X(h), H - B + 8);
-    function line(arr, col) {
-      ctx.strokeStyle = col; ctx.lineWidth = 2.2; ctx.beginPath();
-      arr.forEach((p, i) => i ? ctx.lineTo(X(hs[i]), Y(p)) : ctx.moveTo(X(hs[i]), Y(p))); ctx.stroke();
-    }
-    line(tk, css("--loot")); line(gf, css("--love"));
-    const h = state.hours;
-    ctx.strokeStyle = css("--muted"); ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(X(h) + 0.5, T); ctx.lineTo(X(h) + 0.5, T + ph); ctx.stroke(); ctx.setLineDash([]);
-    for (const [p, col] of [[pTok(h, days, state), css("--loot")], [pGf(h, days, state), css("--love")]]) {
-      ctx.fillStyle = col; ctx.beginPath(); ctx.arc(X(h), Y(p), 4.5, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = css("--panel"); ctx.lineWidth = 1.5; ctx.stroke();
-    }
-  }
-  window.addEventListener("resize", () => draw(daysUntil(SEASON_END)));
-  if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", update);
-  new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  update();
+  showTally();
+  shown.pTok = 0; shown.pLove = 0;
+  RM = true; render(); RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 })();
 </script>
+
 </body></html>
