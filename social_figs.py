@@ -52,37 +52,7 @@ ts = E["t_star"]["4"]; m, s = int(ts), int(round((ts - int(ts)) * 60))
 fig = frame("The optimal time to die", "maximising chests per hour of real life")
 fig.text(0.5, 0.72, f"{m} min {s} s", ha="center", fontsize=54, family="cmb10", color="#b3262b")
 fig.text(0.5, 0.58, r"$T^{*} = -\kappa\left[W_{-1}\!\left(-e^{-(1+O/\kappa)}\right)+1\right] - O$", ha="center", fontsize=19)
-fig.text(0.5, 0.40, "Chests are mostly opened early.\nAfter about 6 minutes, you loot more per hour\nby dying and queueing a fresh map.\nIn a squad, only if you ALL leave together.",
+fig.text(0.5, 0.40, "Chests are mostly opened early.\nAfter about 6 minutes, you loot more per hour\nby dying and queueing a fresh map.\n(Please don't actually do this.)",
          ha="center", fontsize=14, linespacing=1.5)
 fig.savefig("social/03_optimal_death.png", facecolor=BG); plt.close(fig)
-# 4. finds per day
-F = json.load(open("finds_per_day.json")); lo, mid, hi = F["token_finds_per_day_5_50_95"]
-fig = frame("Tokens found today", "worldwide, from Epic's own player counts")
-fig.text(0.5, 0.70, f"{round(mid, -3):,.0f}", ha="center", fontsize=60, family="cmb10", color="#1f5fa8")
-fig.text(0.5, 0.645, f"a day, roughly (90% range {round(lo, -2):,.0f} to {round(hi, -2):,.0f})", ha="center", fontsize=13, color="0.3")
-fig.text(0.5, 0.42, f"4.1 million people in matches at peak.\nAbout 2 billion chests opened a day.\n1 in 137,500 of them has the token.\n\nSo why does nobody you know have one?\nEach find costs about {round(F['player_hours_per_find_median'], -2):,.0f} hours of someone's life.",
-         ha="center", fontsize=14, linespacing=1.55)
-fig.text(0.5, 0.075, "Player counts: daily in-match peaks, 4-8 Nov 2026 (Endgame Tools / FortCharts)", ha="center", fontsize=9.5, color="0.35")
-fig.savefig("social/04_finds_per_day.png", facecolor=BG); plt.close(fig)
-
-# 5. the Typical Gamer rule
-fig = frame("Don't do a Typical Gamer", "a real-world test of the 5:49 rule")
-fig.text(0.5, 0.70, "80 hours", ha="center", fontsize=54, family="cmb10", color="#b3262b")
-fig.text(0.5, 0.42, "He hunted the token for about 80 hours.\nLeft a squad match as a joke.\nHis squad found it moments later.\n\nThe token is shared, but only if\nyou're still in the match.\nThe model gave his squad a 4% shot.",
-         ha="center", fontsize=14, linespacing=1.55)
-fig.text(0.5, 0.075, "Source: Dexerto, 9 Nov 2026", ha="center", fontsize=9.5, color="0.35")
-fig.savefig("social/05_typical_gamer.png", facecolor=BG); plt.close(fig)
-
-# 6. predictions
-fig = frame("Hold me to it", "predictions written 10 Nov, checked 5 Dec")
-items = ["300,000 to 700,000 tokens found\nthis season (normal matches)",
-         "About 2 in 100 solo players with\n100 hours will have it (5 in squads)",
-         "95%+ of 80-hour grinders\nstill won't have one",
-         "About 1,300 gold outfits found a day.\nYou won't know anyone with one."]
-for i, t in enumerate(items):
-    y = 0.76 - i * 0.15
-    fig.text(0.12, y, f"{i+1}.", fontsize=22, family="cmb10", color="#1f5fa8", va="top")
-    fig.text(0.21, y, t, fontsize=14.5, va="top", linespacing=1.4)
-fig.text(0.5, 0.11, "Follow for the results on 5 December.", ha="center", fontsize=15)
-fig.savefig("social/06_predictions.png", facecolor=BG); plt.close(fig)
 print("ok")

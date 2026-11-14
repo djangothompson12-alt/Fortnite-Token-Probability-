@@ -1,7 +1,4 @@
-# Token or True Love?
-
-**Try the calculator:** https://djangothompson12-alt.github.io/Fortnite-Token-Probability-/  
-**Paper (DOI):** https://doi.org/10.5281/zenodo.24150193
+# Loot or Love?
 
 Are we more likely to find the Fortnite Pirate Shop Token or a girlfriend? I'm 19 and have neither, so I wrote a paper about it. [Here it is](loot-or-love.pdf).
 
@@ -15,6 +12,10 @@ Are we more likely to find the Fortnite Pirate Shop Token or a girlfriend? I'm 1
 - If you're actually looking, a girlfriend is more likely by 5 Dec as long as you play under about 23 hours a week. Past that the token wins, mostly because we stop going outside.
 - An average guy who actually tries has about an 8.5% chance by Christmas. Going all out gets you to about 16%, and if you're top 10% for looks and personality it's about 46%. Half of single guys aren't trying at all, which is why the average looks so grim.
 - Dating apps push the line out to about 49 hours. A swipe is roughly 1 in 47,000, which is only about 3x better than a chest.
+
+## Calculator
+
+There's a calculator version where you put in your own hours, looks, personality and effort: [lootorlove.lol](https://lootorlove.lol). It runs the same model as the paper. The code is in `docs/index.html`.
 
 ## Run it yourself
 
